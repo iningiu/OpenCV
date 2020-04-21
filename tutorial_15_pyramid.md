@@ -1,3 +1,4 @@
+```
 import cv2 as cv
 import numpy as np
 
@@ -60,3 +61,4 @@ if __name__ == '__main__':
     # pyramid_demo(img)
 
     laplace_demo(img)
+```
