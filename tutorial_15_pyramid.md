@@ -2,28 +2,16 @@
 import cv2 as cv
 import numpy as np
 
-
 def cv_show(name, img):
     cv.imshow(name, img)
     cv.waitKey(0)
     # cv.destroyAllWindows()
 
-
-def resize(image, width=None, height=None, inter=cv.INTER_AREA):
-    dim = None
-    (h, w) = image.shape[:2]
-    if width is None and height is None:  # 缩放时没有指定缩放后的图片的宽或高
-        return image
-    if width is None:  # 指定了缩放后的高
-        r = height / float(h)  # 计算缩放比例,h缩放了r倍
-        dim = (int(w * r), height)  # w也等比例缩放r倍
-    else:             # 指定了缩放后的宽
-        r = width / float(w)
-        dim = (width, int(h * r))
-    resized = cv.resize(image, dim, interpolation=inter)
-    return resized
-
-
+"""
+pyrDown(src, dst=None, dstsize=None, borderType=None)
+    pyrDown函数先对图像进行高斯平滑，然后再进行降采样（将图像尺寸行和列方向缩减一半）
+    参数dstsize表示降采样之后的目标图像的大小，如果不指定，则默认为((src.cols+1)/2, (src.rows+1)/2))
+"""
 def pyramid_demo(img): # 高斯金字塔
     level = 3 # 金字塔层数
     temp = img.copy()
@@ -36,8 +24,13 @@ def pyramid_demo(img): # 高斯金字塔
         temp = dst.copy() # 作为下一层的输入
     return pyramid_images
 
+
 """
-拉普拉斯金字塔使用的图片大小必须是2^n大小，或者是一个宽高相等的图片
+1.拉普拉斯金字塔使用的图片大小必须是2^n大小，或者是一个宽高相等的图片.
+2.pyrUp(src, dst=None, dstsize=None, borderType=None)
+    pyrUp函数先对图像进行升采样（将图像尺寸行和列方向增大一倍），然后再进行高斯平滑
+    参数dstsize表示降采样之后的目标图像的大小，如果不指定，则默认为(src.cols*2, src.rows*2)
+    borderType参数表示表示图像边界的处理方式
 """
 def laplace_demo(img):
     pyramid_images = pyramid_demo(img) #拉普拉斯需要用到高斯金字塔结果
