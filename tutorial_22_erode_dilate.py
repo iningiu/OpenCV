@@ -49,20 +49,20 @@ def dilate_demo(img):
     cv_show("dilate_demo", dst)
 
 
-def BGRImg(): # 可以不进行灰度处理，直接对彩色图像腐蚀，膨胀
-    img = cv.imread("./images/lena.jpg")
-    cv_show('lena',img)
+def BGRImg(img): # 可以不进行灰度处理，直接对彩色图像腐蚀，膨胀
+
     kernel = cv.getStructuringElement(cv.MORPH_RECT,(5,5))
     dst = cv.erode(img,kernel=kernel)
+    cv_show('erode', dst)
     dst = cv.dilate(dst,kernel=kernel)
-    cv_show('new lena',dst)
+    cv_show('dilate', dst)
 
 
 if __name__ == '__main__':
-    img = cv.imread("./images/01.jpg")
-    # cv_show('img',img)
+    img = cv.imread("./images/dige.png")
+    cv_show('img',img)
 
-    # erode_demo(img)
-    # dilate_demo(img)
+    # erode_demo(img) # 毛刺消去
+    # dilate_demo(img) # 毛刺变粗
 
-    BGRImg()
+    BGRImg(img)
