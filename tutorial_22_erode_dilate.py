@@ -4,7 +4,7 @@ import cv2 as cv
 在OpenCV中实现形态学处理很简单，一般情况下对二值图像进行操作。
 函数一般基本需要输入 两个参数：待处理图像和结构化元素(又称卷积核)用于决定操作性质。
 两个基本的形态学操作是 腐蚀和膨胀。他们的变体构成了开运算、闭运算、梯度等等。
-膨胀是将白色区域扩大，腐蚀是将黑色区域扩大。
+腐蚀是将黑色区域扩大,膨胀是将白色区域扩大。
 """
 
 
@@ -28,6 +28,15 @@ def erode_demo(img):
     ret, binary = cv.threshold(gray, 0, 255, cv.THRESH_BINARY | cv.THRESH_OTSU)
     cv_show("binary", binary)
 
+    """
+    我们可以使用Numpy构建结构化元素，它是正方形的。
+    但有时我们需要构建一个椭圆形 / 圆形的核。为了实现这种要求，OpenCV提供了
+    函数cv2.getStructuringElement()。你只需要告诉他你需要的核的形状和大小。
+        矩形：MORPH_RECT;
+        交叉形：MORPH_CORSS;
+        椭圆形：MORPH_ELLIPSE;
+    """
+    # kernel = np.ones((3,3),np.uint8)
     kernel = cv.getStructuringElement(cv.MORPH_RECT,(5,5)) # 可以修改卷积核大小来增加腐蚀效果，越大腐蚀越强
     dst = cv.erode(binary,kernel=kernel,iterations=1) # 参数3是腐蚀次数，默认为1
     cv_show('erode_demo',dst)
@@ -66,3 +75,6 @@ if __name__ == '__main__':
     # dilate_demo(img) # 毛刺变粗
 
     BGRImg(img)
+
+    # img = cv.imread("./images/lena.jpg")
+    # cv_show('lena', img)
